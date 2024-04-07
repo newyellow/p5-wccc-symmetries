@@ -83,19 +83,18 @@ class ShapeData {
         pop();
 
         // debug physics shape
-        push();
-        stroke('red');
-        strokeWeight(1);
-        noFill();
+        // push();
+        // let startX = this.body.bounds.min.x;
+        // let startY = this.body.bounds.min.y;
 
-        let startX = this.body.bounds.min.x;
-        let startY = this.body.bounds.min.y;
+        // let sizeX = this.body.bounds.max.x - this.body.bounds.min.x;
+        // let sizeY = this.body.bounds.max.y - this.body.bounds.min.y;
 
-        let sizeX = this.body.bounds.max.x - this.body.bounds.min.x;
-        let sizeY = this.body.bounds.max.y - this.body.bounds.min.y;
-
-        rect(startX, startY, sizeX, sizeY);
-        pop();
+        // stroke('red');
+        // strokeWeight(1);
+        // noFill();
+        // rect(startX, startY, sizeX, sizeY);
+        // pop();
     }
 
     updatePhysics() {
@@ -134,16 +133,16 @@ class RectShape extends ShapeData {
         _imgCanvas.noFill();
         _imgCanvas.stroke(_color.h, _color.s, _color.b, _color.a);
 
-        for(let i=0; i<strokeCount; i++)
-        {
-            let strokeWeight = random(1, 3);
-            _imgCanvas.strokeWeight(strokeWeight);
+        // for(let i=0; i<strokeCount; i++)
+        // {
+        //     let strokeWeight = random(1, 3);
+        //     _imgCanvas.strokeWeight(strokeWeight);
 
-            let strokeX = random(-0.5 * _w, 0.5 * _w);
-            let strokeY = random(-0.5 * _h, 0.5 * _h);
+        //     let strokeX = random(-0.5 * _w, 0.5 * _w);
+        //     let strokeY = random(-0.5 * _h, 0.5 * _h);
 
-            _imgCanvas.line(strokeX, strokeY - 6, strokeX, strokeY + 6);
-        }
+        //     _imgCanvas.line(strokeX, strokeY - 6, strokeX, strokeY + 6);
+        // }
         _imgCanvas.pop();
 
         super(_x, _y, _w, _h, verts, newBody, _rotation);
@@ -256,7 +255,7 @@ class TriangleShape extends ShapeData {
         _imgCanvas.triangle(verts[0].x, verts[0].y, verts[1].x, verts[1].y, verts[2].x, verts[2].y);
 
         _imgCanvas.noFill();
-        _imgCanvas.stroke(_color.h, _color.s, _color.b, _color.a);
+        // _imgCanvas.stroke(_color.h, _color.s, _color.b, _color.a);
         _imgCanvas.blendMode(MULTIPLY);
 
         for(let i=0; i<dotCount; i++)
@@ -272,5 +271,51 @@ class TriangleShape extends ShapeData {
 
         let newBody = Bodies.fromVertices(_x, _y, verts);
         super(_x, _y, _w, _h, verts, newBody, 0);
+    }
+}
+
+class CircleShape extends ShapeData {
+    constructor(_x, _y, _r, _color) {
+        let verts = [];
+        let pointCount = 20;
+
+        for (let i = 0; i < pointCount; i++) {
+            let angle = map(i, 0, pointCount, 0, TWO_PI);
+            let x = cos(angle) * _r;
+            let y = sin(angle) * _r;
+
+            verts.push({ x: x, y: y });
+        }
+
+        // draw shape img
+        _imgCanvas.push();
+        _imgCanvas.translate(_x, _y);
+
+        _imgCanvas.beginClip();
+        _imgCanvas.ellipse(0, 0, _r * 2, _r * 2);
+        _imgCanvas.endClip();
+
+        _imgCanvas.blendMode(BLEND);
+        _imgCanvas.background('white');
+        _imgCanvas.noStroke();
+        _imgCanvas.ellipse(0, 0, _r * 2, _r * 2);
+
+        _imgCanvas.noFill();
+        _imgCanvas.stroke(_color.h, _color.s, _color.b, _color.a);
+        _imgCanvas.blendMode(MULTIPLY);
+
+        // for(let i=0; i<dotCount; i++)
+        // {
+        //     let dotSize = random(1, 3);
+        //     _imgCanvas.strokeWeight(dotSize);
+        //     let dotX = random(-_r, _r);
+        //     let dotY = random(-_r, _r);
+
+        //     _imgCanvas.point(dotX, dotY);
+        // }
+        _imgCanvas.pop();
+
+        let newBody = Bodies.circle(_x, _y, _r);
+        super(_x, _y, _r * 2, _r * 2, verts, newBody, 0);
     }
 }
