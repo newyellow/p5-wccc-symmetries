@@ -207,3 +207,15 @@ function getAngle(_x1, _y1, _x2, _y2) {
   let yDiff = _y2 - _y1;
   return atan2(yDiff, xDiff) * 180 / PI + 90;
 }
+
+function rotatePoint(_x, _y, _centerX, _centerY, _angle) {
+  let fromAngle = getAngle(_centerX, _centerY, _x, _y);
+  let distance = dist(_centerX, _centerY, _x, _y);
+
+  let newAngle = fromAngle + _angle;
+
+  let newX = _centerX + sin(radians(newAngle)) * distance;
+  let newY = _centerY - cos(radians(newAngle)) * distance;
+
+  return { x: newX, y: newY };
+}

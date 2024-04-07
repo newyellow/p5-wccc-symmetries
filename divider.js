@@ -7,8 +7,8 @@ class RectData {
     }
 }
 
-let DIVIDE_CHANCE = 0.8;
-let MAX_DEPTH = 3;
+let DIVIDE_CHANCE = 0.9;
+let MAX_DEPTH = 4;
 
 function subdivideRect(_x, _y, _w, _h, _depth) {
     let isSplit = random() < DIVIDE_CHANCE;
@@ -36,5 +36,19 @@ function subdivideRect(_x, _y, _w, _h, _depth) {
     else {
         return [new RectData(_x, _y, _w, _h)];
     }
+}
 
+function mirrorRects (_rects) {
+    let newRects = [];
+    for(let i=0; i< _rects.length; i++)
+    {
+        let nowRect = _rects[i];
+        let x = nowRect.x;
+        let y = nowRect.y;
+        let w = nowRect.w;
+        let h = nowRect.h;
+
+        newRects.push(new RectData(-x-w, y, w, h));
+    }
+    return newRects;
 }
